@@ -40,6 +40,6 @@ public class ListGroup extends UnorderedList {
             throw new IllegalArgumentException("Only ListGroupItems can be inside a ListGroup.");
         }
 
-        add(child, (Element) getElement());
+        add(child, getElement());
     }
 }

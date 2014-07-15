@@ -69,7 +69,7 @@ public class NavbarText extends ComplexWidget implements HasResponsiveness {
 
     @Override
     public void add(final Widget child) {
-        add(child, (Element) getElement());
+        add(child, getElement());
     }
 
     @Override

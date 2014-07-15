@@ -20,15 +20,15 @@ package org.gwtbootstrap3.client.ui.base.form;
  * #L%
  */
 
-import com.google.gwt.dom.client.Element;
-import com.google.gwt.user.client.ui.ComplexPanel;
-import com.google.gwt.user.client.ui.FileUpload;
-import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.Widget;
 import org.gwtbootstrap3.client.ui.base.HasResponsiveness;
 import org.gwtbootstrap3.client.ui.base.helper.StyleHelper;
 import org.gwtbootstrap3.client.ui.constants.DeviceSize;
 import org.gwtbootstrap3.client.ui.constants.Styles;
+
+import com.google.gwt.user.client.ui.ComplexPanel;
+import com.google.gwt.user.client.ui.FileUpload;
+import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Base class for {@link org.gwtbootstrap3.client.ui.Form} related
@@ -47,7 +47,7 @@ public abstract class FormElementContainer extends ComplexPanel implements HasRe
         if (w instanceof ListBox || w instanceof FileUpload) {
             w.addStyleName(Styles.FORM_CONTROL);
         }
-        add(w, (Element) getElement());
+        add(w, getElement());
     }
 
     @Override
