@@ -20,15 +20,15 @@ package org.gwtbootstrap3.client.ui.base;
  * #L%
  */
 
-import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.Style;
-import com.google.gwt.user.client.ui.ComplexPanel;
-import com.google.gwt.user.client.ui.Widget;
 import org.gwtbootstrap3.client.ui.base.helper.StyleHelper;
 import org.gwtbootstrap3.client.ui.base.mixin.IdMixin;
 import org.gwtbootstrap3.client.ui.base.mixin.PullMixin;
 import org.gwtbootstrap3.client.ui.constants.DeviceSize;
 import org.gwtbootstrap3.client.ui.constants.Pull;
+
+import com.google.gwt.dom.client.Style;
+import com.google.gwt.user.client.ui.ComplexPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Base class for widgets that contain further widgets.
@@ -44,7 +44,7 @@ public class ComplexWidget extends ComplexPanel implements HasId, HasResponsiven
      */
     @Override
     public void add(final Widget child) {
-        add(child, (Element) getElement());
+        add(child, getElement());
     }
 
     /**
@@ -54,7 +54,7 @@ public class ComplexWidget extends ComplexPanel implements HasId, HasResponsiven
      * @param beforeIndex - index for the widget
      */
     public void insert(final Widget child, final int beforeIndex) {
-        insert(child, (Element) getElement(), beforeIndex, true);
+        insert(child, getElement(), beforeIndex, true);
     }
 
     /**

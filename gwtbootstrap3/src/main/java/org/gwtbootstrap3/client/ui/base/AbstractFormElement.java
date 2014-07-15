@@ -52,7 +52,7 @@ public class AbstractFormElement extends Div implements HasName, HasEnabled, Has
     protected AbstractFormElement(final AbstractLabelButton button) {
         this.button = button;
         button.setStyleName("");
-        add(button, (Element) getElement());
+        add(button, getElement());
     }
 
     @Override
