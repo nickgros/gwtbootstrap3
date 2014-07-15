@@ -5,7 +5,7 @@
     <groupId>org.gwtbootstrap3</groupId>
     <artifactId>gwtbootstrap3-parent</artifactId>
     <packaging>pom</packaging>
-    <version>0.8-SNAPSHOT</version>
+    <version>0.8.0</version>
     <name>GwtBootstrap3 Parent</name>
 
     <parent>
@@ -197,32 +197,49 @@
         </pluginManagement>
     </build>
 
-    <repositories>
-        <repository>
-            <id>sonatype-nexus</id>
-            <name>Sonatype Nexus</name>
-            <url>http://repository.sonatype.org/content/groups/public/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
+<!--     <repositories> -->
+<!--         <repository> -->
+<!--             <id>sonatype-nexus</id> -->
+<!--             <name>Sonatype Nexus</name> -->
+<!--             <url>http://repository.sonatype.org/content/groups/public/</url> -->
+<!--             <releases> -->
+<!--                 <enabled>true</enabled> -->
+<!--             </releases> -->
+<!--             <snapshots> -->
+<!--                 <enabled>false</enabled> -->
+<!--             </snapshots> -->
+<!--         </repository> -->
+<!--     </repositories> -->
 
-    <pluginRepositories>
-        <pluginRepository>
-            <id>sonatype-nexus-plugins</id>
-            <url>http://repository.sonatype.org/content/groups/public/</url>
-            <name>Sonatype Nexus Plugins</name>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </pluginRepository>
-    </pluginRepositories>
+<!--     <pluginRepositories> -->
+<!--         <pluginRepository> -->
+<!--             <id>sonatype-nexus-plugins</id> -->
+<!--             <url>http://repository.sonatype.org/content/groups/public/</url> -->
+<!--             <name>Sonatype Nexus Plugins</name> -->
+<!--             <releases> -->
+<!--                 <enabled>true</enabled> -->
+<!--             </releases> -->
+<!--             <snapshots> -->
+<!--                 <enabled>false</enabled> -->
+<!--             </snapshots> -->
+<!--         </pluginRepository> -->
+<!--     </pluginRepositories> -->
+
+	<distributionManagement>
+		<repository>
+			<id>sagebionetworks</id>
+			<name>sagebionetworks-releases</name>
+			<url>http://sagebionetworks.artifactoryonline.com/sagebionetworks/libs-releases-local
+			</url>
+		</repository>
+		<snapshotRepository>
+			<id>sagebionetworks</id>
+			<name>sagebionetworks-snapshots</name>
+			<url>http://sagebionetworks.artifactoryonline.com/sagebionetworks/libs-snapshots-local
+			</url>
+			<uniqueVersion>false</uniqueVersion>
+		</snapshotRepository>
+
+	</distributionManagement>
 
 </project>
