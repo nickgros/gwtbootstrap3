@@ -5,7 +5,7 @@
     <groupId>org.gwtbootstrap3</groupId>
     <artifactId>gwtbootstrap3-parent</artifactId>
     <packaging>pom</packaging>
-    <version>0.8-gwt-2.5.1</version>
+    <version>0.8.1-gwt-2.5.1</version>
 
     <name>GwtBootstrap3 Parent</name>
 
@@ -227,12 +227,12 @@
 <!--     </pluginRepositories> -->
 
 	<distributionManagement>
-		<repository>
+        <repository>
 			<id>sagebionetworks</id>
 			<name>sagebionetworks-releases</name>
 			<url>http://sagebionetworks.artifactoryonline.com/sagebionetworks/libs-releases-local
 			</url>
-		</repository>
+        </repository>
 		<snapshotRepository>
 			<id>sagebionetworks</id>
 			<name>sagebionetworks-snapshots</name>
