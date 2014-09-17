@@ -28,7 +28,9 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.Focusable;
 import com.google.gwt.user.client.ui.HasEnabled;
+import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.Widget;
+
 import org.gwtbootstrap3.client.ui.base.*;
 import org.gwtbootstrap3.client.ui.base.helper.StyleHelper;
 import org.gwtbootstrap3.client.ui.base.mixin.ActiveMixin;
@@ -45,35 +47,25 @@ import java.util.List;
  * @author Joshua Godi
  */
 public abstract class AbstractButton extends ComplexWidget implements HasEnabled, HasActive, HasType<ButtonType>,
-        HasSize<ButtonSize>, HasDataTarget, HasClickHandlers, HasTargetHistoryToken, HasHref, Focusable, HasAllMouseHandlers {
+        HasSize<ButtonSize>, HasDataTarget, HasClickHandlers, HasTargetHistoryToken, HasHref, Focusable, HasAllMouseHandlers, HasText {
 
     public class ButtonStateHandler {
-        private ButtonStateHandler() {
-        }
 
         public void loading() {
-            button(getElement(), "loading");
+            setLoading(true);
         }
 
         public void reset() {
-            button(getElement(), "reset");
+            setLoading(false);
         }
 
-        /**
-         * Resets button to specified text state.
-         *
-         * @param state Text state
-         */
-        public void reset(final String state) {
-            button(getElement(), state);
-        }
     }
 
     private final ButtonStateHandler buttonStateHandler = new ButtonStateHandler();
     private final DataTargetMixin<AbstractButton> targetMixin = new DataTargetMixin<AbstractButton>(this);
     private final ActiveMixin<AbstractButton> activeMixin = new ActiveMixin<AbstractButton>(this);
     private final FocusableMixin<AbstractButton> focusableMixin = new FocusableMixin<AbstractButton>(this);
-
+    private String originalText;
     private String targetHistoryToken;
 
     /**
@@ -277,6 +269,10 @@ public abstract class AbstractButton extends ComplexWidget implements HasEnabled
             getElement().removeAttribute(Attributes.DATA_LOADING_TEXT);
         }
     }
+    
+    public String getDataLoadingText(){
+        return getElement().getAttribute(Attributes.DATA_LOADING_TEXT);
+    }
 
     public void toggle() {
         button(getElement(), "toggle");
@@ -290,7 +286,58 @@ public abstract class AbstractButton extends ComplexWidget implements HasEnabled
         final NativeEvent event = Document.get().createClickEvent(0, 0, 0, 0, 0, false, false, false, false);
         DomEvent.fireNativeEvent(event, this);
     }
+    
+    /**
+     * The original version of this class called the native
+     * {@link #button(Element, String)} method to change the loading state of a
+     * button. The native method would result in a DOM level change to the text
+     * of the button. Since the GWT button widget did not participate in the
+     * change the widget's text was silently disconnected from the actual DOM.
+     * Any subsequent attempt to remove the text from the widget would result in
+     * the following error in Firefox:
+     * <p>
+     * <code>com.google.gwt.core.client.JavaScriptException: (TypeError) @com.google.gwt.dom.client.Node::removeChild(Lcom/google/gwt/dom/client/Node;)([JavaScript object(26181)]): this.removeChild is not a function</code>
+     * <p>
+     * See: SWC-1715 for more information.
+     * <p>
+     * Therefore, we changed this class to directly change the widget rather
+     * than call the native method.
+     * 
+     * @param loading
+     */
+    protected void setLoading(boolean loading) {
+        this.setEnabled(!loading);
+        captureOriginalText();
+        String text = null;
+        if(loading){
+            text = getDataLoadingText();
+        }else{
+            text = getOriginalText();
+        }
+        this.setText(text);      
+    }
 
+    protected String getOriginalText(){
+        return this.originalText;
+    }
+    
+    /**
+     * Attempt to capture the original text before setting the data loading text.
+     */
+    protected void captureOriginalText(){
+        String currentText = getText();
+        String loadingText = getDataLoadingText();
+        // Ensure we never save the loading text as the original text
+        if(currentText == null){
+            if(loadingText != null){
+                this.originalText = null;
+            }
+        }else if(!currentText.equals(loadingText)){
+           this.originalText = currentText;
+        }
+        
+    }
+    
     protected abstract Element createElement();
 
     // @formatter:off
