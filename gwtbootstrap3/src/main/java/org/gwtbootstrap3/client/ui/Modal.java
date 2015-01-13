@@ -111,9 +111,24 @@ public class Modal extends Div implements IsClosable {
     @Override
     protected void onLoad() {
         super.onLoad();
+        hide();
         bindJavaScriptEvents(getElement());
     }
-
+    
+    /**
+     * For the case were a modal is added DOM, navigating away from page while
+     * the modal was shown would result in the static background remaining on
+     * the on the screen. See: SWC-2028. To address this issue we added the
+     * override the onUnload() method and call both hide() and
+     * unbindAllHandlers(). This addresses the issue.
+     */
+    @Override
+    protected void onUnload(){
+        super.onUnload();
+        hide();
+        unbindAllHandlers(getElement());
+    }
+    
     @Override
     public void add(final Widget w) {
         // User can supply own ModalHeader
