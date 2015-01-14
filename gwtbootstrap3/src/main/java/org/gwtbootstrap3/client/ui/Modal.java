@@ -21,10 +21,12 @@ package org.gwtbootstrap3.client.ui;
  */
 
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.event.shared.HandlerRegistration;
+
 import org.gwtbootstrap3.client.shared.event.*;
 import org.gwtbootstrap3.client.ui.base.helper.StyleHelper;
 import org.gwtbootstrap3.client.ui.base.modal.ModalContent;
@@ -228,6 +230,22 @@ public class Modal extends Div implements IsClosable {
         modal(getElement(), HIDE);
     }
 
+    /**
+     * The default behavior of the close button is to unconditionally close the
+     * modal using the DOM attribute:
+     * <p>
+     * data-dismiss="modal"
+     * <p>
+     * To override this behavior a ClickHandler can be added to the close
+     * button. Note: This method will remove the data-dismiss attribute from the
+     * DOM element.
+     * 
+     * @param handler
+     */
+    public HandlerRegistration addCloseHanlder(ClickHandler handler){
+        return header.addCloseHnalder(handler);
+    }
+    
     public HandlerRegistration addShowHandler(final ModalShowHandler modalShowHandler) {
         return addHandler(modalShowHandler, ModalShowEvent.getType());
     }
