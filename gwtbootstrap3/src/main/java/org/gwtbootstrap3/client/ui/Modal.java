@@ -242,7 +242,7 @@ public class Modal extends Div implements IsClosable {
      * 
      * @param handler
      */
-    public HandlerRegistration addCloseHanlder(ClickHandler handler){
+    public HandlerRegistration addCloseHandler(ClickHandler handler){
         return header.addCloseHnalder(handler);
     }
     
