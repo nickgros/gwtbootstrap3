@@ -83,7 +83,7 @@ public class ModalHeader extends FlowPanel implements ModalComponent, IsClosable
      * 
      * @param handler
      */
-    public HandlerRegistration addCloseHnalder(ClickHandler handler) {
+    public HandlerRegistration addCloseHandler(ClickHandler handler) {
         this.setClosable(true);
         closeButton.setDataDismiss(null);
         return this.closeButton.addClickHandler(handler);
