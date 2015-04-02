@@ -46,7 +46,7 @@ public abstract class AbstractAnchorListItem extends AbstractListItem
 
     protected AbstractAnchorListItem() {
         anchor = new Anchor();
-        add(anchor, (Element) getElement());
+        add(anchor, getElement());
     }
 
     @Override

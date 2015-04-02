@@ -29,6 +29,15 @@ import org.gwtbootstrap3.client.shared.event.ModalShowHandler;
 import org.gwtbootstrap3.client.shared.event.ModalShownEvent;
 import org.gwtbootstrap3.client.shared.event.ModalShownHandler;
 import org.gwtbootstrap3.client.ui.base.helper.StyleHelper;
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.web.bindery.event.shared.HandlerRegistration;
+
+import org.gwtbootstrap3.client.shared.event.*;
+import org.gwtbootstrap3.client.ui.base.helper.StyleHelper;
 import org.gwtbootstrap3.client.ui.base.modal.ModalContent;
 import org.gwtbootstrap3.client.ui.base.modal.ModalDialog;
 import org.gwtbootstrap3.client.ui.constants.Attributes;
@@ -112,7 +121,7 @@ public class Modal extends Div implements IsClosable {
     public void setWidth(final String width) {
         dialog.setWidth(width);
     }
-
+    
     public void setSize(ModalSize size) {
         StyleHelper.addUniqueEnumStyleName(dialog, ModalSize.class, size);
     }
@@ -120,9 +129,24 @@ public class Modal extends Div implements IsClosable {
     @Override
     protected void onLoad() {
         super.onLoad();
+        hide();
         bindJavaScriptEvents(getElement());
     }
-
+    
+    /**
+     * For the case were a modal is added DOM, navigating away from page while
+     * the modal was shown would result in the static background remaining on
+     * the on the screen. See: SWC-2028. To address this issue we added the
+     * override the onUnload() method and call both hide() and
+     * unbindAllHandlers(). This addresses the issue.
+     */
+    @Override
+    protected void onUnload(){
+        super.onUnload();
+        hide();
+        unbindAllHandlers(getElement());
+    }
+    
     @Override
     public void add(final Widget w) {
         // User can supply own ModalHeader
@@ -212,7 +236,7 @@ public class Modal extends Div implements IsClosable {
         // tabindex must be set to -1 for ESC key to work
         if (keyboard) {
             getElement().setAttribute(Attributes.TABINDEX, "-1");
-        }
+    }
     }
 
     public void toggle() {
@@ -228,6 +252,22 @@ public class Modal extends Div implements IsClosable {
         modal(getElement(), HIDE);
     }
 
+    /**
+     * The default behavior of the close button is to unconditionally close the
+     * modal using the DOM attribute:
+     * <p>
+     * data-dismiss="modal"
+     * <p>
+     * To override this behavior a ClickHandler can be added to the close
+     * button. Note: This method will remove the data-dismiss attribute from the
+     * DOM element.
+     * 
+     * @param handler
+     */
+    public HandlerRegistration addCloseHandler(ClickHandler handler){
+        return header.addCloseHandler(handler);
+    }
+    
     public HandlerRegistration addShowHandler(final ModalShowHandler modalShowHandler) {
         return addHandler(modalShowHandler, ModalShowEvent.getType());
     }

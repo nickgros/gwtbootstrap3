@@ -42,4 +42,16 @@ public class CloseButton extends AbstractButton {
     protected Element createElement() {
         return Document.get().createPushButtonElement().cast();
     }
+
+    @Override
+    public String getText() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public void setText(String text) {
+        // TODO Auto-generated method stub
+        
+    }
 }

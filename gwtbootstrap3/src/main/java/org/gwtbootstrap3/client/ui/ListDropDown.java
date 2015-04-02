@@ -72,6 +72,6 @@ public class ListDropDown extends AbstractListItem {
             child.setStyleName(Styles.DROPDOWN_TOGGLE);
         }
 
-        add(child, (Element) getElement());
+        add(child, getElement());
     }
 }

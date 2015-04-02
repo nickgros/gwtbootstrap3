@@ -20,6 +20,10 @@ package org.gwtbootstrap3.client.ui;
  * #L%
  */
 
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.shared.HandlerRegistration;
+
 import org.gwtbootstrap3.client.ui.base.button.CloseButton;
 import org.gwtbootstrap3.client.ui.constants.ButtonDismiss;
 import org.gwtbootstrap3.client.ui.constants.HeadingSize;
@@ -68,5 +72,23 @@ public class ModalHeader extends FlowPanel implements ModalComponent, IsClosable
     @Override
     public boolean isClosable() {
         return closeButton.getParent() != null;
+    }
+
+    /**
+     * The default behavior of the close button is to unconditionally close the
+     * modal using the DOM attribute:
+     * <p>
+     * data-dismiss="modal"
+     * <p>
+     * To override this behavior a ClickHandler can be added to the close
+     * button. Note: This method will remove the data-dismiss attribute from the
+     * DOM element.
+     * 
+     * @param handler
+     */
+    public HandlerRegistration addCloseHandler(ClickHandler handler) {
+        this.setClosable(true);
+        closeButton.setDataDismiss(null);
+        return this.closeButton.addClickHandler(handler);
     }
 }

@@ -57,7 +57,7 @@ public class IconStack extends ComplexPanel implements HasResponsiveness {
             throw new IllegalArgumentException("An IconStack can only have children that are of type Icon.");
         }
 
-        add(child, (Element) getElement());
+        add(child, getElement());
     }
 
     @Override

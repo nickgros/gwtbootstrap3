@@ -36,14 +36,14 @@ public enum ModalSize implements Style.HasCssName {
 
     private ModalSize(final String cssClass) {
         this.cssClass = cssClass;
-    }
+	}
 
     @Override
     public String getCssName() {
         return cssClass;
-    }
+	}
 
     public static ModalSize fromStyleName(final String styleName) {
         return EnumHelper.fromStyleName(styleName, ModalSize.class, MEDIUM);
-    }
+	}
 }

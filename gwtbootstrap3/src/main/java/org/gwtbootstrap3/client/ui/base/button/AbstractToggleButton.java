@@ -82,8 +82,8 @@ public abstract class AbstractToggleButton extends AbstractIconButton implements
                 if (toggle == Toggle.DROPDOWN) {
                     addStyleName(Styles.DROPDOWN_TOGGLE);
 
-                    add(separator, (Element) getElement());
-                    add(caret, (Element) getElement());
+                    add(separator, getElement());
+                    add(caret, getElement());
                 }
             }
         });

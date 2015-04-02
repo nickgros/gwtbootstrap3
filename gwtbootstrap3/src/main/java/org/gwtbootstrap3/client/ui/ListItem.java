@@ -66,7 +66,7 @@ public class ListItem extends AbstractListItem implements HasWidgets, HasText, H
     @Override
     public void setText(final String text) {
         this.text = new Text(text);
-        add(this.text, (Element) getElement());
+        add(this.text, getElement());
     }
 
     /**
