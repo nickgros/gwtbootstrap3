@@ -6,7 +6,7 @@
     <groupId>org.gwtbootstrap3</groupId>
     <artifactId>gwtbootstrap3-parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.0-gwt-2.7.0</version>
+    <version>1.1-gwt-2.7.0</version>
 
     <name>GwtBootstrap3 Parent</name>
     <description>GWT wrapper for the Bootstrap front-end framework</description>
