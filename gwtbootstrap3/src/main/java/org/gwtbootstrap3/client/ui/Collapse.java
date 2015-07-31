@@ -198,7 +198,7 @@ public class Collapse extends Div {
     private native void unbindJavaScriptEvents(final com.google.gwt.dom.client.Element e) /*-{
         $wnd.jQuery(e).off('show.bs.collapse');
         $wnd.jQuery(e).off('shown.bs.collapse');
-        $wnd.jQuery(e).off('hideS.bs.collapse');
+        $wnd.jQuery(e).off('hide.bs.collapse');
         $wnd.jQuery(e).off('hidden.bs.collapse');
     }-*/;
 
