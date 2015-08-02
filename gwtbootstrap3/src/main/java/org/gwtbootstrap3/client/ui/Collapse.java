@@ -96,7 +96,7 @@ public class Collapse extends Div {
      * Causes the collapse to show
      */
     public void show() {
-    	if (isAttached()) {
+    	if (isAttached() && isHidden()) {
     		fireMethod(getElement(), SHOW);
     	} else {
     		toggle = true;
@@ -107,7 +107,7 @@ public class Collapse extends Div {
      * Causes the collapse to hide
      */
     public void hide() {
-    	if (isAttached()) {
+    	if (isAttached() && isShown()) {
     		fireMethod(getElement(), HIDE);
     	} else {
     		toggle = false;
