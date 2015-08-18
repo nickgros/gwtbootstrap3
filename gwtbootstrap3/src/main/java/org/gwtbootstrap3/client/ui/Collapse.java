@@ -59,6 +59,8 @@ public class Collapse extends Div {
         // Configure the collapse
         if(toggle) {
             addStyleName(Styles.IN);
+        } else {
+        	removeStyleName(Styles.IN);
         }
     }
 
@@ -83,25 +85,41 @@ public class Collapse extends Div {
      * Causes the collapse to show or hide
      */
     public void toggle() {
-        fireMethod(getElement(), TOGGLE);
+    	if (isAttached()) {
+    		fireMethod(getElement(), TOGGLE);
+    	} else {
+    		toggle = !toggle;
+    	}
     }
 
     /**
      * Causes the collapse to show
      */
     public void show() {
-        fireMethod(getElement(), SHOW);
+    	if (isAttached() && isHidden()) {
+    		fireMethod(getElement(), SHOW);
+    	} else {
+    		toggle = true;
+    	}
     }
 
     /**
      * Causes the collapse to hide
      */
     public void hide() {
-        fireMethod(getElement(), HIDE);
+    	if (isAttached() && isShown()) {
+    		fireMethod(getElement(), HIDE);
+    	} else {
+    		toggle = false;
+    	}
     }
 
     public boolean isShown() {
-        return this.getElement().hasClassName(Styles.IN);
+    	if (isAttached()) {
+            return this.getElement().hasClassName(Styles.IN);
+    	} else {
+    		return toggle;
+    	}
     }
     
     public boolean isHidden() {
@@ -191,7 +209,7 @@ public class Collapse extends Div {
     }-*/;
 
     private native void fireMethod(final com.google.gwt.dom.client.Element e, String method) /*-{
-        $wnd.jQuery(e).collapse(method);
+    	$wnd.jQuery(e).collapse(method);
     }-*/;
 
     private native void fireMethod(final com.google.gwt.dom.client.Element e, int slideNumber) /*-{

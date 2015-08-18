@@ -517,28 +517,36 @@ public class Tooltip implements IsWidget, HasWidgets, HasOneWidget, HasId, HasHo
      * Toggle the Tooltip to either show/hide
      */
     public void toggle() {
-        call(widget.getElement(), TOGGLE);
+    	if (widget.isAttached()) {
+            call(widget.getElement(), TOGGLE);
+    	}
     }
 
     /**
      * Force show the Tooltip
      */
     public void show() {
-        call(widget.getElement(), SHOW);
+    	if (widget.isAttached()) {
+            call(widget.getElement(), SHOW);
+    	}
     }
 
     /**
      * Force hide the Tooltip
      */
     public void hide() {
-        call(widget.getElement(), HIDE);
+    	if (widget.isAttached()) {
+            call(widget.getElement(), HIDE);
+    	}
     }
 
     /**
      * Force the Tooltip to be destroyed
      */
     public void destroy() {
-        call(widget.getElement(), DESTROY);
+    	if (widget.isAttached()) {
+    		call(widget.getElement(), DESTROY);
+    	}
     }
 
     /**
