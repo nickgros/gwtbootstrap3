@@ -38,7 +38,6 @@ import org.gwtbootstrap3.client.ui.constants.Trigger;
 
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.logical.shared.AttachEvent;
-import com.google.gwt.event.logical.shared.AttachEvent.Handler;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.HasOneWidget;
@@ -520,13 +519,6 @@ public class Tooltip implements IsWidget, HasWidgets, HasOneWidget, HasId, HasHo
     public void toggle() {
     	if (widget.isAttached()) {
             call(widget.getElement(), TOGGLE);
-    	} else {
-    		widget.addAttachHandler(new Handler() {
-				@Override
-				public void onAttachOrDetach(AttachEvent event) {
-		            call(widget.getElement(), TOGGLE);
-				}
-    		});
     	}
     }
 
@@ -553,7 +545,7 @@ public class Tooltip implements IsWidget, HasWidgets, HasOneWidget, HasId, HasHo
      */
     public void destroy() {
     	if (widget.isAttached()) {
-            call(widget.getElement(), DESTROY);
+    		call(widget.getElement(), DESTROY);
     	}
     }
 
