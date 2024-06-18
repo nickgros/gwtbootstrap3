@@ -4,7 +4,7 @@ package org.gwtbootstrap3.client.ui;
  * #%L
  * GwtBootstrap3
  * %%
- * Copyright (C) 2013 - 2014 GwtBootstrap3
+ * Copyright (C) 2013 - 2015 GwtBootstrap3
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,19 +20,21 @@ package org.gwtbootstrap3.client.ui;
  * #L%
  */
 
-import java.util.List;
-
-import org.gwtbootstrap3.client.shared.event.TabShowEvent;
-import org.gwtbootstrap3.client.shared.event.TabShowHandler;
-import org.gwtbootstrap3.client.shared.event.TabShownEvent;
-import org.gwtbootstrap3.client.shared.event.TabShownHandler;
-import org.gwtbootstrap3.client.ui.base.HasDataTarget;
-import org.gwtbootstrap3.client.ui.constants.Toggle;
-
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Widget;
+import org.gwtbootstrap3.client.shared.event.TabShowEvent;
+import org.gwtbootstrap3.client.shared.event.TabShowHandler;
+import org.gwtbootstrap3.client.shared.event.TabShownEvent;
+import org.gwtbootstrap3.client.shared.event.TabShownHandler;
+import org.gwtbootstrap3.client.shared.js.JQuery;
+import org.gwtbootstrap3.client.ui.base.HasDataTarget;
+import org.gwtbootstrap3.client.ui.constants.IconSize;
+import org.gwtbootstrap3.client.ui.constants.IconType;
+import org.gwtbootstrap3.client.ui.constants.Toggle;
+
+import java.util.List;
 
 /**
  * List item for the nav tabs, needs special toggle and JS to make it work properly
@@ -51,6 +53,7 @@ import com.google.gwt.user.client.ui.Widget;
  * </pre>
  *
  * @author Joshua Godi
+ * @author Drew Spencer
  * @see org.gwtbootstrap3.client.ui.NavTabs
  */
 public class TabListItem extends AnchorListItem implements HasDataTarget {
@@ -70,6 +73,21 @@ public class TabListItem extends AnchorListItem implements HasDataTarget {
     public TabListItem(final String text) {
         super(text);
         setDataToggle(Toggle.TAB);
+    }
+
+    public TabListItem(final String text, final IconType iconType) {
+        this(text);
+        setIcon(iconType);
+    }
+
+    public TabListItem(final String text, final IconType iconType, final IconSize iconSize) {
+        this(text, iconType);
+        setIconSize(iconSize);
+    }
+
+    public TabListItem(final String text, final String badgeText) {
+        this(text);
+        setBadgeText(badgeText);
     }
 
     /**
@@ -121,43 +139,37 @@ public class TabListItem extends AnchorListItem implements HasDataTarget {
         setDataTarget(href);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public String getHref() {
         return getDataTarget();
     }
 
+    /** {@inheritDoc} */
     @Override
     public void setDataTargetWidgets(final List<Widget> widgets) {
         anchor.setDataTargetWidgets(widgets);
     }
 
+    /** {@inheritDoc} */
     @Override
     public void setDataTargetWidget(final Widget widget) {
         anchor.setDataTargetWidget(widget);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void setDataTarget(final String dataTarget) {
         anchor.setDataTarget(dataTarget);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public String getDataTarget() {
         return anchor.getDataTarget();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void setEnabled(final boolean enabled) {
         super.setEnabled(enabled);
@@ -170,9 +182,7 @@ public class TabListItem extends AnchorListItem implements HasDataTarget {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     protected void onLoad() {
         super.onLoad();
@@ -181,9 +191,7 @@ public class TabListItem extends AnchorListItem implements HasDataTarget {
         bindJavaScriptEvents(anchor.getElement());
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     protected void onUnload() {
         super.onUnload();
@@ -222,26 +230,26 @@ public class TabListItem extends AnchorListItem implements HasDataTarget {
         fireEvent(new TabShownEvent(this, evt));
     }
 
-    private native void showTab(Element e) /*-{
-        $wnd.jQuery(e).tab('show');
-    }-*/;
+    private void showTab(Element e) {
+        JQuery.jQuery(e).tab("show");
+    }
 
     // @formatter:off
-    private native void bindJavaScriptEvents(final Element e) /*-{
-        var target = this;
-        var $tab = $wnd.jQuery(e);
+    private void bindJavaScriptEvents(final Element e) {
+        JQuery tab = JQuery.jQuery(e);
 
-        $tab.on('show.bs.tab', function (evt) {
-            target.@org.gwtbootstrap3.client.ui.TabListItem::onShow(Lcom/google/gwt/user/client/Event;)(evt);
+        tab.on("show.bs.tab", (evt) -> {
+            onShow(evt);
         });
 
-        $tab.on('shown.bs.tab', function (evt) {
-            target.@org.gwtbootstrap3.client.ui.TabListItem::onShown(Lcom/google/gwt/user/client/Event;)(evt);
+        tab.on("shown.bs.tab", (evt) -> {
+            onShown(evt);
         });
-    }-*/;
+    }
 
-    private native void unbindJavaScriptEvents(final Element e) /*-{
-        $wnd.jQuery(e).off('show.bs.tab');
-        $wnd.jQuery(e).off('shown.bs.tab');
-    }-*/;
+    private void unbindJavaScriptEvents(final Element e) {
+        JQuery.jQuery(e).off("show.bs.tab");
+        JQuery.jQuery(e).off("shown.bs.tab");
+    }
+    
 }

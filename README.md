@@ -1,18 +1,29 @@
-[![Build Status](https://travis-ci.org/gwtbootstrap3/gwtbootstrap3.svg?branch=master)](https://travis-ci.org/gwtbootstrap3/gwtbootstrap3)
+# GwtBootstrap3 [![Build Status](https://travis-ci.org/gwtbootstrap3/gwtbootstrap3.svg?branch=master)](https://travis-ci.org/gwtbootstrap3/gwtbootstrap3) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.gwtbootstrap3/gwtbootstrap3/badge.svg?style=flat-square)](https://maven-badges.herokuapp.com/maven-central/org.gwtbootstrap3/gwtbootstrap3/)
 
-GwtBootstrap3 is a GWT wrapper for the [Bootstrap](http://getbootstrap.com/) front-end framework version 3
-containing design templates, styles and beautiful widgets.
+## NOTE: This project is inactive.
 
-The current stable release is 0.9. For a migration from 0.7 or lower to 0.8+ see our [Conversion Guide](https://github.com/gwtbootstrap3/gwtbootstrap3/wiki/0.7-to-0.8--Conversion).
 
-* Have a look at the [demo](http://gwtbootstrap3.github.io/gwtbootstrap3-demo/) and its [source code](https://github.com/gwtbootstrap3/gwtbootstrap3-demo/tree/master/src/main/java/org/gwtbootstrap3/demo/client).
-* For help getting started, check out the [project wiki](https://github.com/gwtbootstrap3/gwtbootstrap3/wiki).
-* If you have any questions, please ask them on our [Google Group](https://groups.google.com/forum/?fromgroups#!forum/gwtbootstrap3).
-* Want to help by writing code? That's great! Please read [Contributing](https://github.com/gwtbootstrap3/gwtbootstrap3/wiki/Contributing) first.
+GWTBootstrap3 is a wrapper for [Twitter Bootstrap](http://getbootstrap.com/), which helps you develop responsive, mobile first HTML, CSS, and JS projects on the web using Java and Google Web Toolkit (GWT). 
 
-MASTER is currently reflecting v1.0 and produces the v1.0-SNAPSHOT jar.
+### Add GWTBootstrap3 to your project
+You can easily add GWTBootstrap3 to your project by including the library as a Maven dependency.
+```xml
+<dependency>
+    <groupId>org.gwtbootstrap3</groupId>
+    <artifactId>gwtbootstrap3</artifactId>
+    <version>VERSION</version>
+    <scope>provided</scope>
+</dependency>
+```
+### Final Release
+* 1.0.1 - Released on 14 November 2019.
+  * Based on Bootstrap v3.4.1
+* 1.0.0 - Released on 26 August 2019. 
+  * Based on Bootstrap v3.4.0
+* [Demo](http://gwtbootstrap3.github.io/gwtbootstrap3-demo/) - The GWTBootstrap3 1.0.0 Demo.
+* [API Docs](http://gwtbootstrap3.github.io/gwtbootstrap3-demo/apidocs) - The GWTBootstrap3 1.0.0 API Javadoc.
+* [Supported Features](https://github.com/gwtbootstrap3/gwtbootstrap3/wiki/Supported-Features) - Current releases supported features.
 
-* Want to see the demo as the v1.0-SNAPSHOT is worked on? Visit the 1.0-SNAPSHOT demo [here](http://gwtbootstrap3.github.io/gwtbootstrap3-demo/snapshot).
-* The API docs for the v1.0-SNAPSHOT can be found [here](http://gwtbootstrap3.github.io/gwtbootstrap3-demo/snapshot/apidocs) as well.
-
-**Note:** This library is feature complete and has support for every Bootstrap element as of v3.3.2. See [supported features](https://github.com/gwtbootstrap3/gwtbootstrap3/wiki/Supported-Features) on the project wiki.
+### Resources
+* [Project Wiki](https://github.com/gwtbootstrap3/gwtbootstrap3/wiki) - Help with getting started and other useful project help.
+[![Join the chat at https://gitter.im/gwtbootstrap3/gwtbootstrap3](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/gwtbootstrap3/gwtbootstrap3?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)

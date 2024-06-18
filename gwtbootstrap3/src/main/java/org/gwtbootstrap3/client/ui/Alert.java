@@ -24,6 +24,7 @@ import org.gwtbootstrap3.client.shared.event.AlertCloseEvent;
 import org.gwtbootstrap3.client.shared.event.AlertCloseHandler;
 import org.gwtbootstrap3.client.shared.event.AlertClosedEvent;
 import org.gwtbootstrap3.client.shared.event.AlertClosedHandler;
+import org.gwtbootstrap3.client.shared.js.JQuery;
 import org.gwtbootstrap3.client.ui.base.HasResponsiveness;
 import org.gwtbootstrap3.client.ui.base.HasType;
 import org.gwtbootstrap3.client.ui.base.button.CloseButton;
@@ -56,6 +57,8 @@ public class Alert extends Div implements HasWidgets, HasText, HasType<AlertType
     private final Text text = new Text();
     private final CloseButton closeButton = new CloseButton();
 
+    private final HandlerRegistration closedHandlerReg;
+
     /**
      * Builds a default alert
      */
@@ -63,6 +66,14 @@ public class Alert extends Div implements HasWidgets, HasText, HasType<AlertType
         setStyleName(Styles.ALERT);
         setType(AlertType.WARNING);
         closeButton.setDataDismiss(ButtonDismiss.ALERT);
+        closedHandlerReg = addCloseHandler(new AlertCloseHandler() {
+            @Override
+            public void onClose(AlertCloseEvent evt) {
+                // Do logical detach
+                removeFromParent();
+                closedHandlerReg.removeHandler();
+            }
+        });
     }
 
     /**
@@ -160,6 +171,30 @@ public class Alert extends Div implements HasWidgets, HasText, HasType<AlertType
     }
 
     /**
+     * Sets whether the Alert should fade out before it is removed
+     *
+     * @param fade The alert will fade on close before it is removed when {@code true}
+     */
+    public void setFade(final boolean fade) {
+        if (fade) {
+            addStyleName(Styles.FADE);
+            addStyleName(Styles.IN);
+        } else {
+            removeStyleName(Styles.FADE);
+            removeStyleName(Styles.IN);
+        }
+    }
+
+    /**
+     * Returns if the alert will fade out before it is removed
+     *
+     * @return true = alert will fade out, false = alert won't fade out
+     */
+    public boolean isFade() {
+        return StyleHelper.containsStyle(getStyleName(), Styles.FADE);
+    }
+
+    /**
      * Closes alert.
      */
     public void close() {
@@ -205,25 +240,24 @@ public class Alert extends Div implements HasWidgets, HasText, HasType<AlertType
     }
 
     // @formatter:off
-    private native void alert(final Element e, final String arg) /*-{
-        $wnd.jQuery(e).alert(arg);
-    }-*/;
+    private void alert(final Element e, final String arg) {
+        JQuery.jQuery(e).alert(arg);
+    }
 
-    private native void bindJavaScriptEvents(final Element e) /*-{
-        var target = this;
-        var $alert = $wnd.jQuery(e);
+    private void bindJavaScriptEvents(final Element e) {
+        JQuery alert = JQuery.jQuery(e);
 
-        $alert.on('close.bs.alert', function (evt) {
-            target.@org.gwtbootstrap3.client.ui.Alert::onClose(Lcom/google/gwt/user/client/Event;)(evt);
+        alert.on("close.bs.alert", (evt) -> {
+            onClose(evt);
         });
 
-        $alert.on('closed.bs.alert', function (evt) {
-            target.@org.gwtbootstrap3.client.ui.Alert::onClosed(Lcom/google/gwt/user/client/Event;)(evt);
+        alert.on("closed.bs.alert", (evt) -> {
+            onClosed(evt);
         });
-    }-*/;
+    }
 
-    private native void unbindJavaScriptEvents(final Element e) /*-{
-        $wnd.jQuery(e).off('close.bs.alert');
-        $wnd.jQuery(e).off('closed.bs.alert');
-    }-*/;
+    private void unbindJavaScriptEvents(final Element e) {
+        JQuery.jQuery(e).off("close.bs.alert");
+        JQuery.jQuery(e).off("closed.bs.alert");
+    }
 }

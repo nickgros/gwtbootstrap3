@@ -20,23 +20,14 @@ package org.gwtbootstrap3.client.ui;
  * #L%
  */
 
-import org.gwtbootstrap3.client.shared.event.ModalHiddenEvent;
-import org.gwtbootstrap3.client.shared.event.ModalHiddenHandler;
-import org.gwtbootstrap3.client.shared.event.ModalHideEvent;
-import org.gwtbootstrap3.client.shared.event.ModalHideHandler;
-import org.gwtbootstrap3.client.shared.event.ModalShowEvent;
-import org.gwtbootstrap3.client.shared.event.ModalShowHandler;
-import org.gwtbootstrap3.client.shared.event.ModalShownEvent;
-import org.gwtbootstrap3.client.shared.event.ModalShownHandler;
-import org.gwtbootstrap3.client.ui.base.helper.StyleHelper;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.event.shared.HandlerRegistration;
-
 import org.gwtbootstrap3.client.shared.event.*;
+import org.gwtbootstrap3.client.shared.js.JQuery;
 import org.gwtbootstrap3.client.ui.base.helper.StyleHelper;
 import org.gwtbootstrap3.client.ui.base.modal.ModalContent;
 import org.gwtbootstrap3.client.ui.base.modal.ModalDialog;
@@ -44,12 +35,6 @@ import org.gwtbootstrap3.client.ui.constants.Attributes;
 import org.gwtbootstrap3.client.ui.constants.ModalBackdrop;
 import org.gwtbootstrap3.client.ui.constants.Styles;
 import org.gwtbootstrap3.client.ui.html.Div;
-
-import com.google.gwt.dom.client.Element;
-import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.Widget;
-import com.google.web.bindery.event.shared.HandlerRegistration;
 
 /**
  * Modal dialog.
@@ -106,10 +91,15 @@ public class Modal extends Div implements IsClosable {
     private final ModalDialog dialog = new ModalDialog();
     private ModalHeader header = new ModalHeader();
 
+    private HandlerRegistration removeOnHideHandlerReg = null;
+
     private boolean hideOtherModals = false;
 
     public Modal() {
         setStyleName(Styles.MODAL);
+
+        // Set the z-index to match bootstrap's .modal
+        getElement().getStyle().setZIndex(1050);
 
         content.add(header);
         dialog.add(content);
@@ -121,7 +111,7 @@ public class Modal extends Div implements IsClosable {
     public void setWidth(final String width) {
         dialog.setWidth(width);
     }
-    
+
     public void setSize(ModalSize size) {
         StyleHelper.addUniqueEnumStyleName(dialog, ModalSize.class, size);
     }
@@ -132,7 +122,7 @@ public class Modal extends Div implements IsClosable {
         hide();
         bindJavaScriptEvents(getElement());
     }
-    
+
     /**
      * For the case were a modal is added DOM, navigating away from page while
      * the modal was shown would result in the static background remaining on
@@ -146,7 +136,8 @@ public class Modal extends Div implements IsClosable {
         hide();
         unbindAllHandlers(getElement());
     }
-    
+
+
     @Override
     public void add(final Widget w) {
         // User can supply own ModalHeader
@@ -192,11 +183,15 @@ public class Modal extends Div implements IsClosable {
      * @param removeOnHide - true to remove modal and unbind events on hide, false to keep it in the DOM
      */
     public void setRemoveOnHide(final boolean removeOnHide) {
+        if (removeOnHideHandlerReg != null) {
+            removeOnHideHandlerReg.removeHandler();
+            removeOnHideHandlerReg = null;
+        }
         if (removeOnHide) {
-            addHiddenHandler(new ModalHiddenHandler() {
+            removeOnHideHandlerReg = addHiddenHandler(new ModalHiddenHandler() {
                 @Override
                 public void onHidden(final ModalHiddenEvent evt) {
-                    unbindAllHandlers(getElement());
+                    // Do logical detach
                     removeFromParent();
                 }
             });
@@ -236,7 +231,7 @@ public class Modal extends Div implements IsClosable {
         // tabindex must be set to -1 for ESC key to work
         if (keyboard) {
             getElement().setAttribute(Attributes.TABINDEX, "-1");
-    }
+        }
     }
 
     public void toggle() {
@@ -261,13 +256,13 @@ public class Modal extends Div implements IsClosable {
      * To override this behavior a ClickHandler can be added to the close
      * button. Note: This method will remove the data-dismiss attribute from the
      * DOM element.
-     * 
+     *
      * @param handler
      */
     public HandlerRegistration addCloseHandler(ClickHandler handler){
         return header.addCloseHandler(handler);
     }
-    
+
     public HandlerRegistration addShowHandler(final ModalShowHandler modalShowHandler) {
         return addHandler(modalShowHandler, ModalShowEvent.getType());
     }
@@ -337,42 +332,41 @@ public class Modal extends Div implements IsClosable {
         }
     }
 
-    private native void bindJavaScriptEvents(final Element e) /*-{
-        var target = this;
-        var $modal = $wnd.jQuery(e);
+    private void bindJavaScriptEvents(final Element e) {
+        JQuery modal = JQuery.jQuery(e);
 
-        $modal.on('show.bs.modal', function (evt) {
-            target.@org.gwtbootstrap3.client.ui.Modal::onShow(Lcom/google/gwt/user/client/Event;)(evt);
+        modal.on("show.bs.modal", (evt) -> {
+            onShow(evt);
         });
 
-        $modal.on('shown.bs.modal', function (evt) {
-            target.@org.gwtbootstrap3.client.ui.Modal::onShown(Lcom/google/gwt/user/client/Event;)(evt);
+        modal.on("shown.bs.modal", (evt) -> {
+            onShown(evt);
         });
 
-        $modal.on('hide.bs.modal', function (evt) {
-            target.@org.gwtbootstrap3.client.ui.Modal::onHide(Lcom/google/gwt/user/client/Event;)(evt);
+        modal.on("hide.bs.modal", (evt) -> {
+            onHide(evt);
         });
 
-        $modal.on('hidden.bs.modal', function (evt) {
-            target.@org.gwtbootstrap3.client.ui.Modal::onHidden(Lcom/google/gwt/user/client/Event;)(evt);
+        modal.on("hidden.bs.modal", (evt) -> {
+            onHidden(evt);
         });
-    }-*/;
+    }
 
-    private native void modal(final Element e, final String arg) /*-{
-        $wnd.jQuery(e).modal(arg);
-    }-*/;
+    private void modal(final Element e, final String arg) {
+        JQuery.jQuery(e).modal(arg);
+    }
 
     // Will iterate over all the modals, if they are visible it will hide them
-    private native void hideOtherModals() /*-{
-        $wnd.jQuery('.modal.in').modal('hide');
-    }-*/;
+    private void hideOtherModals() {
+        JQuery.jQuery(".modal.in").modal("hide");
+    }
 
     // Unbinds all the handlers
-    private native void unbindAllHandlers(final Element e) /*-{
-        var $e = $wnd.jQuery(e);
-        $e.off('show.bs.modal');
-        $e.off('shown.bs.modal');
-        $e.off('hide.bs.modal');
-        $e.off('hidden.bs.modal');
-    }-*/;
+    private void unbindAllHandlers(final Element e) {
+        JQuery je = JQuery.jQuery(e);
+        je.off("show.bs.modal");
+        je.off("shown.bs.modal");
+        je.off("hide.bs.modal");
+        je.off("hidden.bs.modal");
+    }
 }

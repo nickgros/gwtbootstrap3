@@ -21,9 +21,11 @@ package org.gwtbootstrap3.client.ui;
  */
 
 import org.gwtbootstrap3.client.ui.base.AbstractInputGroupAddon;
+import org.gwtbootstrap3.client.ui.base.HasBadge;
 import org.gwtbootstrap3.client.ui.base.HasIcon;
 import org.gwtbootstrap3.client.ui.base.HasIconPosition;
 import org.gwtbootstrap3.client.ui.base.mixin.IconTextMixin;
+import org.gwtbootstrap3.client.ui.constants.BadgePosition;
 import org.gwtbootstrap3.client.ui.constants.IconFlip;
 import org.gwtbootstrap3.client.ui.constants.IconPosition;
 import org.gwtbootstrap3.client.ui.constants.IconRotate;
@@ -53,9 +55,9 @@ import com.google.gwt.user.client.ui.HasText;
  * @see InputGroup
  * @see InputGroupButton
  */
-public class InputGroupAddon extends AbstractInputGroupAddon implements HasText, HasIcon, HasIconPosition {
+public class InputGroupAddon extends AbstractInputGroupAddon implements HasText, HasIcon, HasIconPosition, HasBadge {
 
-    IconTextMixin<InputGroupAddon> iconTextMixin = new IconTextMixin<InputGroupAddon>(this);
+    IconTextMixin<InputGroupAddon> iconTextMixin = new IconTextMixin<>(this);
 
     public InputGroupAddon() {
         super(Styles.INPUT_GROUP_ADDON);
@@ -132,24 +134,16 @@ public class InputGroupAddon extends AbstractInputGroupAddon implements HasText,
         return iconTextMixin.isIconBordered();
     }
 
+    /** {@inheritDoc} */
     @Override
-    public void setIconMuted(final boolean iconMuted) {
-        iconTextMixin.setIconMuted(iconMuted);
+    public void setIconInverse(final boolean iconInverse) {
+        iconTextMixin.setIconInverse(iconInverse);
     }
 
+    /** {@inheritDoc} */
     @Override
-    public boolean isIconMuted() {
-        return iconTextMixin.isIconMuted();
-    }
-
-    @Override
-    public void setIconLight(final boolean iconLight) {
-        iconTextMixin.setIconLight(iconLight);
-    }
-
-    @Override
-    public boolean isIconLight() {
-        return iconTextMixin.isIconLight();
+    public boolean isIconInverse() {
+        return iconTextMixin.isIconInverse();
     }
 
     @Override
@@ -163,6 +157,16 @@ public class InputGroupAddon extends AbstractInputGroupAddon implements HasText,
     }
 
     @Override
+    public void setIconPulse(boolean iconPulse) {
+        iconTextMixin.setIconPulse(iconPulse);
+    }
+
+    @Override
+    public boolean isIconPulse() {
+        return iconTextMixin.isIconPulse();
+    }
+
+    @Override
     public void setIconFixedWidth(final boolean iconFixedWidth) {
         iconTextMixin.setIconFixedWidth(iconFixedWidth);
     }
@@ -170,5 +174,30 @@ public class InputGroupAddon extends AbstractInputGroupAddon implements HasText,
     @Override
     public boolean isIconFixedWidth() {
         return iconTextMixin.isIconFixedWidth();
+    }
+
+    @Override
+    public void setBadgeText(String badgeText) {
+        iconTextMixin.setBadgeText(badgeText);
+    }
+
+    @Override
+    public String getBadgeText() {
+        return iconTextMixin.getBadgeText();
+    }
+
+    @Override
+    public void setBadgePosition(BadgePosition badgePosition) {
+        iconTextMixin.setBadgePosition(badgePosition);
+    }
+
+    @Override
+    public BadgePosition getBadgePosition() {
+        return iconTextMixin.getBadgePosition();
+    }
+
+    @Override
+    public void setIconColor(String iconColor) {
+        iconTextMixin.setIconColor(iconColor);
     }
 }

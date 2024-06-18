@@ -33,10 +33,14 @@ import com.google.gwt.user.client.ui.Widget;
  *
  * @param <W> the generic type
  * @param <V> the value type
+ * 
+ * @author Steven Jardine
  */
 public class BlankValidatorMixin<W extends Widget & HasValue<V> & Editor<V>, V> extends DefaultValidatorMixin<W, V> {
 
     private boolean allowBlank = true;
+
+    private BlankValidator<V> blankValidator;
 
     /**
      * Constructor.
@@ -58,6 +62,15 @@ public class BlankValidatorMixin<W extends Widget & HasValue<V> & Editor<V>, V> 
     }
 
     /**
+     * Hook for custom blank validators.
+     *
+     * @return the blank validator
+     */
+    protected BlankValidator<V> createBlankValidator() {
+        return new BlankValidator<V>();
+    }
+
+    /**
      * @return the allow blank
      */
     public boolean getAllowBlank() {
@@ -68,9 +81,14 @@ public class BlankValidatorMixin<W extends Widget & HasValue<V> & Editor<V>, V> 
      * @param allowBlank the new allow blank
      */
     public void setAllowBlank(boolean allowBlank) {
+        if (blankValidator == null) {
+            blankValidator = createBlankValidator();
+        }
         this.allowBlank = allowBlank;
         if (!allowBlank) {
-            addValidator(new BlankValidator<V>());
+            addValidator(blankValidator);
+        } else {
+            removeValidator(blankValidator);
         }
     }
 

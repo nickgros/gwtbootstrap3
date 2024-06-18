@@ -22,6 +22,7 @@ package org.gwtbootstrap3.client.ui.base.button;
 
 import java.util.List;
 
+import org.gwtbootstrap3.client.shared.js.JQuery;
 import org.gwtbootstrap3.client.ui.base.ComplexWidget;
 import org.gwtbootstrap3.client.ui.base.HasActive;
 import org.gwtbootstrap3.client.ui.base.HasDataTarget;
@@ -30,6 +31,7 @@ import org.gwtbootstrap3.client.ui.base.HasType;
 import org.gwtbootstrap3.client.ui.base.helper.StyleHelper;
 import org.gwtbootstrap3.client.ui.base.mixin.ActiveMixin;
 import org.gwtbootstrap3.client.ui.base.mixin.DataTargetMixin;
+import org.gwtbootstrap3.client.ui.base.mixin.EnabledMixin;
 import org.gwtbootstrap3.client.ui.base.mixin.FocusableMixin;
 import org.gwtbootstrap3.client.ui.constants.Attributes;
 import org.gwtbootstrap3.client.ui.constants.ButtonDismiss;
@@ -82,6 +84,7 @@ public abstract class AbstractButton extends ComplexWidget implements HasEnabled
     private final DataTargetMixin<AbstractButton> targetMixin = new DataTargetMixin<AbstractButton>(this);
     private final ActiveMixin<AbstractButton> activeMixin = new ActiveMixin<AbstractButton>(this);
     private final FocusableMixin<AbstractButton> focusableMixin = new FocusableMixin<AbstractButton>(this);
+    private final EnabledMixin<AbstractButton> enabledMixin = new EnabledMixin<AbstractButton>(this);
     private String originalText;
     private String targetHistoryToken;
 
@@ -110,12 +113,12 @@ public abstract class AbstractButton extends ComplexWidget implements HasEnabled
 
     @Override
     public void setEnabled(final boolean enabled) {
-        getElement().setPropertyBoolean("disabled", !enabled);
+        enabledMixin.setEnabled(enabled);
     }
 
     @Override
     public boolean isEnabled() {
-        return !getElement().getPropertyBoolean("disabled");
+        return enabledMixin.isEnabled();
     }
 
     @Override
@@ -286,7 +289,7 @@ public abstract class AbstractButton extends ComplexWidget implements HasEnabled
             getElement().removeAttribute(Attributes.DATA_LOADING_TEXT);
         }
     }
-    
+
     public String getDataLoadingText(){
         return getElement().getAttribute(Attributes.DATA_LOADING_TEXT);
     }
@@ -303,7 +306,7 @@ public abstract class AbstractButton extends ComplexWidget implements HasEnabled
         final NativeEvent event = Document.get().createClickEvent(0, 0, 0, 0, 0, false, false, false, false);
         DomEvent.fireNativeEvent(event, this);
     }
-    
+
     /**
      * The original version of this class called the native
      * {@link #button(Element, String)} method to change the loading state of a
@@ -319,7 +322,7 @@ public abstract class AbstractButton extends ComplexWidget implements HasEnabled
      * <p>
      * Therefore, we changed this class to directly change the widget rather
      * than call the native method.
-     * 
+     *
      * @param loading
      */
     protected void setLoading(boolean loading) {
@@ -331,13 +334,13 @@ public abstract class AbstractButton extends ComplexWidget implements HasEnabled
         }else{
             text = getOriginalText();
         }
-        this.setText(text);      
+        this.setText(text);
     }
 
     protected String getOriginalText(){
         return this.originalText;
     }
-    
+
     /**
      * Attempt to capture the original text before setting the data loading text.
      */
@@ -352,14 +355,14 @@ public abstract class AbstractButton extends ComplexWidget implements HasEnabled
         }else if(!currentText.equals(loadingText)){
            this.originalText = currentText;
         }
-        
+
     }
-    
+
     protected abstract Element createElement();
 
     // @formatter:off
 
-    private native void button(final Element e, final String arg) /*-{
-        $wnd.jQuery(e).button(arg);
-    }-*/;
+    private void button(final Element e, final String arg) {
+        JQuery.jQuery(e).button(arg);
+    }
 }
